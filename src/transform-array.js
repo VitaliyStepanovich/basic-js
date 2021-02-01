@@ -3,37 +3,38 @@ const CustomError = require("../extensions/custom-error");
 module.exports = function transform(arr) {
 
   if (!Array.isArray(arr)) {
-    throw new Error();
+    throw new Error('Array expected');
   } 
+    
+  let transformArr =  arr.reduce((acc, value, index, array) => {	
+    
+    switch(value) { 
+      case '--discard-prev':          
+        acc.pop();
+        gitbreak; 
 
-  const sequences = ['--discard-next', '--discard-prev', '--double-next', '--double-prev'];
-  let transformArr = [...arr];
+      case '--double-prev':        
+        acc.push(acc[acc.length-1]);	 
+        break;
 
-  transformArr =  transformArr.reduce((acc, value, index, array) => {	
-    switch(true) {
-      case value == sequences[0]:
-      array[index + 1] !== undefined  ? array.splice(index + 1, 1) : null;
-      break;
+      default:        
+        switch(array[index-1]) {
+          case '--discard-next':
+            break;
+          case '--double-next':
+            acc.push(value);
+            acc.push(value);	 
+            break;
+          default:
+            acc.push(value);
+            break;
+        }
+        break;	  
+    }	
 
-    case value == sequences[1]:
-      array[index - 1] !== undefined ? array.splice(index - 1, 1) : null;	 
-      break;
-
-    case value == sequences[2]:
-      array[index + 1] !== undefined ? array[index] = array[index + 1] : null;	 
-      break;		
-
-    case value == sequences[3]:
-      array[index - 1] !== undefined ? array[index] = array[index - 1] : null;	 
-      break;
-  
-    default:   
-      break;	  
-  }	
-
-  return array;
+    return acc;
   }, []);	
 
-  return transformArr.filter(item => !sequences.includes(item));
+  return transformArr.filter(item => !['--discard-next', '--discard-prev', '--double-next', '--double-prev'].includes(item) && item !== undefined );
 
 }
