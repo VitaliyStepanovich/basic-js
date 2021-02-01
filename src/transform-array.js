@@ -11,7 +11,7 @@ module.exports = function transform(arr) {
     switch(value) { 
       case '--discard-prev':          
         acc.pop();
-        gitbreak; 
+        break; 
 
       case '--double-prev':        
         acc.push(acc[acc.length-1]);	 
@@ -31,7 +31,6 @@ module.exports = function transform(arr) {
         }
         break;	  
     }	
-
     return acc;
   }, []);	
 
