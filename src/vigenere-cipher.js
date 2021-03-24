@@ -78,13 +78,11 @@ class VigenereCipheringMachine {
       }
 
     }
-    //console.log(decryptLetters);
+    
     decryptLetters = this.direct == true ? decryptLetters : this.reverse(decryptLetters);
     decryptMessage = decryptLetters.join('');
     
-    return decryptMessage;
-    //throw new CustomError('Not implemented');
-    // remove line with error and write your code here
+    return decryptMessage;    
   }
 }
 
